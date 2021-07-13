@@ -1,0 +1,55 @@
+---
+- name:
+
+  hosts: raspberrypi
+  remote_user: pi
+
+  vars:
+    workdir: $HOME/zandronum-rpi/
+    repo_url: https://github.com/doomjoshuaboy/zandronum-rpi.git
+
+  tasks:
+    - name: Update repositories cache
+      apt:
+        name: python-apt
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install necessary packages
+      apt:
+        pkg:
+          - build-essential
+          - zlib1g-dev
+          - libsdl1.2-dev
+          - libjpeg-dev
+          - nasm
+          - tar
+          - libbz2-dev
+          - libgtk2.0-dev
+          - cmake
+          - git
+          - libfluidsynth-dev
+          - libgl1-mesa-dev
+          - libssl-dev
+
+    - name: Git clone zandronum-rip
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ workdir }}"
+        update: yes
+
+    - name: Make buildserver directory in zandronum-rpi directory
+      file:
+        path: "{{workdir}}/buildserver"
+        state: directory
+
+    - name: Compile cmake files zandronum-rpi
+      command: "cmake -DCMAKE_BUILD_TYPE=Release -DSERVERONLY=ON -DNO_ASM=1 .."
+      args:
+        chdir: "{{workdir}}/buildserver"
+
+    - name: Compile zandronum
+      command: "make -j 4"
+      args:
+        chdir: "{{workdir}}/buildserver"
+
