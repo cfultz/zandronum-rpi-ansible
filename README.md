@@ -14,7 +14,7 @@ Although it seems obvious, you need to install ansible on the machine you want t
 
 ## Now what?
 
-Simply run the following in a terminal on the RPi or your remote machine: `git clone https://github.com/cfultz/zandronum-rpi-ansible.git`
+Simply run the following in a terminal on the RPi or your remote machine: `git clone https://github.com/cfultz/zandronum-rpi-ansible.git`. Make sure you have git installed!
 
 After that, you'll need to `cd` into the `zandronum-rpi-ansible` and edit the `inventory.ini` file to be your machine's IP address.
 
